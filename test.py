@@ -5,7 +5,7 @@ import torch
 
 print('starting test program...')
 print('loading llava model...')
-model = LlavaForConditionalGeneration.from_pretrained("llava-hf/llava-1.5-7b-hf", torch_dtype=torch.float16)
+model = LlavaForConditionalGeneration.from_pretrained("llava-hf/llava-1.5-7b-hf", torch_dtype=torch.float16, device_map="auto")
 
 print('loading processor...')
 processor = AutoProcessor.from_pretrained("llava-hf/llava-1.5-7b-hf")
