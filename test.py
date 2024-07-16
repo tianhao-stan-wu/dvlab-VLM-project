@@ -1,10 +1,11 @@
 from PIL import Image
 import requests
 from transformers import AutoProcessor, LlavaForConditionalGeneration
+import torch
 
 print('starting test program...')
 print('loading llava model...')
-model = LlavaForConditionalGeneration.from_pretrained("llava-hf/llava-1.5-7b-hf")
+model = LlavaForConditionalGeneration.from_pretrained("llava-hf/llava-1.5-7b-hf", torch_dtype=torch.float16)
 
 print('loading processor...')
 processor = AutoProcessor.from_pretrained("llava-hf/llava-1.5-7b-hf")
