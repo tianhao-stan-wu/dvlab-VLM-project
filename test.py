@@ -22,4 +22,4 @@ inputs = processor(text=prompt, images=image, return_tensors="pt")
 print('model generating outputs...')
 generate_ids = model.generate(**inputs, max_new_tokens=15)
 print('processor decoding outputs...')
-processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+print(processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0])
