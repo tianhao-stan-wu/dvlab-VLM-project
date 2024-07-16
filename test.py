@@ -1,25 +1,36 @@
-from PIL import Image
-import requests
-from transformers import AutoProcessor, LlavaForConditionalGeneration
-import torch
+def inference_test():
 
-print('starting test program...')
-print('loading llava model...')
-model = LlavaForConditionalGeneration.from_pretrained("llava-hf/llava-1.5-7b-hf", torch_dtype=torch.float16, device_map="auto")
+    from PIL import Image
+    import requests
+    from transformers import AutoProcessor, LlavaForConditionalGeneration
+    import torch
 
-print('loading processor...')
-processor = AutoProcessor.from_pretrained("llava-hf/llava-1.5-7b-hf")
+    print('starting test program...')
+    print('loading llava model...')
+    model = LlavaForConditionalGeneration.from_pretrained("llava-hf/llava-1.5-7b-hf", torch_dtype=torch.float16, device_map="auto")
 
-print('loading image...')
-prompt = "USER: <image>\nWhat's the content of the image? ASSISTANT:"
-url = "https://www.ilankelman.org/stopsigns/australia.jpg"
-image = Image.open(requests.get(url, stream=True).raw)
+    print('loading processor...')
+    processor = AutoProcessor.from_pretrained("llava-hf/llava-1.5-7b-hf")
 
-print('processor generating inputs...')
-inputs = processor(text=prompt, images=image, return_tensors="pt")
+    print('loading image...')
+    prompt = "USER: <image>\nWhat's the content of the image? ASSISTANT:"
+    url = "https://www.ilankelman.org/stopsigns/australia.jpg"
+    image = Image.open(requests.get(url, stream=True).raw)
 
-# Generate
-print('model generating outputs...')
-generate_ids = model.generate(**inputs, max_new_tokens=15)
-print('processor decoding outputs...')
-print(processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0])
+    print('processor generating inputs...')
+    inputs = processor(text=prompt, images=image, return_tensors="pt")
+
+    # Generate
+    print('model generating outputs...')
+    generate_ids = model.generate(**inputs, max_new_tokens=15)
+    print('processor decoding outputs...')
+    print(processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0])
+
+
+from datasets import load_dataset
+
+dataset = load_dataset("liuhaotian/LLaVA-Instruct-150K", data_files="llava_instruct_150k.json", data_dir="/dataset/sharedir/research/coco2017/train2017")
+example = dataset['train'][0]
+print(example)
+width, height = example["image"].size
+print("image size:", width, height)
