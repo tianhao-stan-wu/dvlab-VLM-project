@@ -25,12 +25,3 @@ def inference_test():
     generate_ids = model.generate(**inputs, max_new_tokens=15)
     print('processor decoding outputs...')
     print(processor.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0])
-
-
-from datasets import load_dataset
-
-dataset = load_dataset("liuhaotian/LLaVA-Instruct-150K", data_files="llava_instruct_150k.json", data_dir="/dataset/sharedir/research/coco2017/train2017")
-example = dataset['train'][0]
-print(example)
-width, height = example["image"].size
-print("image size:", width, height)
